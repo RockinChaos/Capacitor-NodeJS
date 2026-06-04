@@ -37,7 +37,7 @@
 **Capacitor v8 or newer is required.**
 
 ```bash
-npm install https://github.com/hampoelz/capacitor-nodejs/releases/download/v1.0.0-beta.10/capacitor-nodejs.tgz
+npm install https://github.com/hampoelz/capacitor-nodejs/releases/download/v1.0.0-beta.11/capacitor-nodejs.tgz
 npx cap sync
 ```
 
