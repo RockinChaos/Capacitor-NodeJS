@@ -5,6 +5,7 @@ import android.system.Os;
 import com.getcapacitor.Logger;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Arrays;
 
 public class NodeProcess {
     static {
@@ -48,6 +49,7 @@ public class NodeProcess {
             envCount++;
         }
 
+        Logger.debug(CapacitorNodeJSPlugin.LOGGER_TAG, "Starting Node with args: " + Arrays.toString(arguments));
         nativeStart(arguments, environmentVariables, true);
     }
 

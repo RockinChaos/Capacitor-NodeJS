@@ -31,7 +31,7 @@ public class CapacitorNodeJSPlugin extends Plugin {
 
         final PluginSettings pluginSettings = readPluginSettings();
         if (pluginSettings.startMode.equals("auto")) {
-            implementation.startEngine(null, pluginSettings.nodeDir, null, new String[] {}, new HashMap<>());
+            implementation.startEngine(null, pluginSettings.nodeDir, null, pluginSettings.nodeArgs, new HashMap<>());
         }
     }
 
@@ -40,6 +40,7 @@ public class CapacitorNodeJSPlugin extends Plugin {
 
         protected String nodeDir = "nodejs";
         protected String startMode = "auto";
+        protected String[] nodeArgs = new String[]{};
     }
 
     private PluginSettings readPluginSettings() {
@@ -48,6 +49,11 @@ public class CapacitorNodeJSPlugin extends Plugin {
 
         settings.nodeDir = config.getString("nodeDir", settings.nodeDir);
         settings.startMode = config.getString("startMode", settings.startMode);
+
+        final String[] nodeArgs = config.getArray("nodeArgs", new String[]{});
+        if (nodeArgs.length > 0) {
+            settings.nodeArgs = nodeArgs;
+        }
 
         return settings;
     }
@@ -83,7 +89,6 @@ public class CapacitorNodeJSPlugin extends Plugin {
         final String[] nodeArgsArray;
         if (nodeArgs != null) {
             nodeArgsArray = new String[nodeArgs.length()];
-
             try {
                 for (int i = 0; i < nodeArgs.length(); i++) {
                     nodeArgsArray[i] = nodeArgs.getString(i);
@@ -93,7 +98,7 @@ public class CapacitorNodeJSPlugin extends Plugin {
                 return;
             }
         } else {
-            nodeArgsArray = new String[] {};
+            nodeArgsArray = pluginSettings.nodeArgs;
         }
 
         final Map<String, String> nodeEnvMap = new HashMap<>();

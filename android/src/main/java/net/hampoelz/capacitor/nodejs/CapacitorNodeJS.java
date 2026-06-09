@@ -25,7 +25,7 @@ public class CapacitorNodeJS {
     private final SharedPreferences preferences;
     private final CapacitorNodeJSPlugin.PluginEventNotifier eventNotifier;
     private final EngineStatus engineStatus = new EngineStatus();
-    private final NodeProcess nodeProcess = new NodeProcess(new ReceiveCallback());
+    private static NodeProcess nodeProcess;
 
     protected CapacitorNodeJS(Context context, CapacitorNodeJSPlugin.PluginEventNotifier eventNotifier) {
         this.context = context;
