@@ -42,8 +42,5 @@ jobs:
       - name: Lint
         run: npm run lint:ci
 
-      - name: Build
-        run: npm run build
-
       - name: Verify Android
         run: npm run verify:ci

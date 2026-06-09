@@ -8,14 +8,11 @@ export interface CapacitorNodeJSPlugin {
   send(args: ChannelPayloadData): Promise<void>;
   whenReady(): Promise<void>;
 
-  addListener(
-    eventName: string,
-    listenerFunc: ChannelListenerCallback,
-  ): Promise<PluginListenerHandle>;
+  addListener(eventName: string, listenerFunc: ChannelListenerCallback): Promise<PluginListenerHandle>;
 }
 
 const CapacitorNodeJS = registerPlugin<CapacitorNodeJSPlugin>('CapacitorNodeJS', {
-  web: () => import('./web').then((m) => new m.CapacitorNodeJSWeb())
+  web: () => import('./web').then((m) => new m.CapacitorNodeJSWeb()),
 });
 
 export { CapacitorNodeJS };

@@ -3,11 +3,12 @@ package net.hampoelz.capacitor.nodejs;
 import android.system.ErrnoException;
 import android.system.Os;
 import com.getcapacitor.Logger;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Arrays;
 
 public class NodeProcess {
+
     static {
         System.loadLibrary("native-lib");
         System.loadLibrary("node");

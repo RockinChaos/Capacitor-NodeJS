@@ -39,7 +39,7 @@ public class CapacitorNodeJSPlugin extends Plugin {
 
         protected String nodeDir = "nodejs";
         protected String startMode = "auto";
-        protected String[] nodeArgs = new String[]{};
+        protected String[] nodeArgs = new String[] {};
     }
 
     private PluginSettings readPluginSettings() {
@@ -49,7 +49,7 @@ public class CapacitorNodeJSPlugin extends Plugin {
         settings.nodeDir = config.getString("nodeDir", settings.nodeDir);
         settings.startMode = config.getString("startMode", settings.startMode);
 
-        final String[] nodeArgs = config.getArray("nodeArgs", new String[]{});
+        final String[] nodeArgs = config.getArray("nodeArgs", new String[] {});
         if (nodeArgs.length > 0) {
             settings.nodeArgs = nodeArgs;
         }
