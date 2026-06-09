@@ -17,15 +17,18 @@ public class NodeProcess {
 
     private native void nativeSend(String channelName, String message);
 
-    /** @noinspection unused*/
     private void nativeReceive(String channelName, String message) {
         receiveCallback.receive(channelName, message);
     }
 
-    private final ReceiveCallback receiveCallback;
+    private volatile ReceiveCallback receiveCallback;
 
     protected NodeProcess(ReceiveCallback receiveCallback) {
         this.receiveCallback = receiveCallback;
+    }
+
+    protected void setReceiveCallback(ReceiveCallback callback) {
+        this.receiveCallback = callback;
     }
 
     protected void start(String modulePath, String[] parameter, Map<String, String> env, String cachePath) {

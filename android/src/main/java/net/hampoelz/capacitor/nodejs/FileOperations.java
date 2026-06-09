@@ -122,7 +122,6 @@ public class FileOperations {
         try {
             final File destinationFile = new File(destinationPath);
 
-            //noinspection ResultOfMethodCallIgnored
             destinationFile.createNewFile();
 
             final InputStream in = assetManager.open(assetPath);

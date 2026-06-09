@@ -24,13 +24,19 @@ public class CapacitorNodeJS {
     private final Context context;
     private final SharedPreferences preferences;
     private final CapacitorNodeJSPlugin.PluginEventNotifier eventNotifier;
-    private final EngineStatus engineStatus = new EngineStatus();
+    private static final EngineStatus engineStatus = new EngineStatus();
     private static NodeProcess nodeProcess;
 
     protected CapacitorNodeJS(Context context, CapacitorNodeJSPlugin.PluginEventNotifier eventNotifier) {
         this.context = context;
         this.preferences = context.getSharedPreferences(CapacitorNodeJSPlugin.PREFS_TAG, Context.MODE_PRIVATE);
         this.eventNotifier = eventNotifier;
+
+        if (nodeProcess == null) {
+            nodeProcess = new NodeProcess(new ReceiveCallback());
+        } else {
+            nodeProcess.setReceiveCallback(new ReceiveCallback());
+        }
 
         try {
             this.packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -39,8 +45,7 @@ public class CapacitorNodeJS {
         }
     }
 
-    /** @noinspection InnerClassMayBeStatic*/
-    private class EngineStatus {
+    private static class EngineStatus {
 
         private final ArrayList<PluginCall> whenEngineReadyListeners = new ArrayList<>();
         private boolean isEngineStarted = false;

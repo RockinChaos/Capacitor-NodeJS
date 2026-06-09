@@ -35,8 +35,7 @@ public class CapacitorNodeJSPlugin extends Plugin {
         }
     }
 
-    /** @noinspection InnerClassMayBeStatic*/
-    private class PluginSettings {
+    private static class PluginSettings {
 
         protected String nodeDir = "nodejs";
         protected String startMode = "auto";
