@@ -1,0 +1,61 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    name: Build, Generate & Draft Release
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '18.20.4'
+          cache: 'npm'
+
+      - name: Get package version
+        id: pkg
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Check version not already released
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="v${{ steps.pkg.outputs.version }}"
+          RELEASE=$(gh release view "$TAG" --json isDraft -q '.isDraft' 2>/dev/null || echo "not_found")
+          if [ "$RELEASE" = "false" ]; then
+            echo "Release $TAG already exists and is published. Aborting."
+            exit 1
+          fi
+          echo "Safe to proceed."
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Pack
+        run: npm run pack
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v${{ steps.pkg.outputs.version }}
+          name: Release v${{ steps.pkg.outputs.version }}
+          draft: true
+          files: build/capacitor-nodejs-*.tgz
+
+      - name: Update Docs
+        run: npm run docgen
+
+      - name: Commit updated README
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: 'chore: update docs'
+          file_pattern: README.md dist/docs.json
