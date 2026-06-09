@@ -15,8 +15,7 @@ export interface CapacitorNodeJSPlugin {
 }
 
 const CapacitorNodeJS = registerPlugin<CapacitorNodeJSPlugin>('CapacitorNodeJS', {
-  web: () => import('./web').then((m) => new m.CapacitorNodeJSWeb()),
-  electron: () => (window as any).CapacitorCustomPlatform.plugins.CapacitorNodeJS,
+  web: () => import('./web').then((m) => new m.CapacitorNodeJSWeb())
 });
 
 export { CapacitorNodeJS };

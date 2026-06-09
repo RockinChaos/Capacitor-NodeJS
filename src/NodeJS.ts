@@ -1,5 +1,4 @@
 import type { PluginListenerHandle } from '@capacitor/core';
-import { Capacitor } from '@capacitor/core';
 
 import type { ChannelPayloadData, ChannelCallbackData, ChannelListenerCallback, StartOptions } from './definitions';
 import { CapacitorNodeJS } from './implementation';
@@ -30,9 +29,6 @@ export interface NodeJSInterface {
 
   /**
    * Listens to `eventName` and calls `listenerFunc(data)` when a new message arrives from the Node.js process.
-   *
-   * **Note:** When using the Electron platform, [`PluginListenerHandle.remove()`](#pluginlistenerhandle) does not work due to limitations.
-   * Use [`removeListener(listenerFunc)`](#removelistener) instead.
    *
    * @since 1.0.0
    */
@@ -92,11 +88,7 @@ class NodeJSPlugin implements NodeJSInterface {
   }
 
   async removeListener(listenerHandle: PluginListenerHandle): Promise<void> {
-    if (Capacitor.getPlatform() === 'electron') {
-      await (CapacitorNodeJS as any).removeListener(listenerHandle);
-    } else {
-      await listenerHandle.remove();
-    }
+    await listenerHandle.remove();
 
     for (let index = 0; index < this.listenerList.length; index++) {
       const listener = this.listenerList[index];

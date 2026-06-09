@@ -45,10 +45,6 @@ npx cap sync
 
 - [x] Android
 - [ ] IOS _(coming soon)_
-- [x] ~~Using the [`capacitor-community/electron` plugin](https://github.com/capacitor-community/electron):~~
-  - [x] ~~Windows~~
-  - [x] ~~Linux~~
-  - [x] ~~macOS~~
 - [ ] _Web (maybe in future with WebAssembly?)_
 
 ## Examples
@@ -248,11 +244,6 @@ For convenience, a postinstall script can be added to the main `package.json` in
 
 > You may also want to add a gitignore file to ignore unnecessary files.
 > To do this, create a new file called `.gitignore` in the Node.js project directory and copy the contents of [github/gitignore/Node.gitignore](https://github.com/github/gitignore/blob/main/Node.gitignore) into it.
-
-> [!IMPORTANT]  
-> If the [`capacitor-community/electron`](https://github.com/capacitor-community/electron) plugin is used, packaging with the electron-builder may cause problems since it does not include the modules installed in the Node.js project by default.
->
-> To fix this issue, add the configuration `"includeSubNodeModules": true` to the `electron-builder.config.json`.
 
 ### Improve Node.js loading times
 
@@ -828,9 +819,6 @@ addListener(eventName: string, listenerFunc: ChannelListenerCallback) => Promise
 ```
 
 Listens to `eventName` and calls `listenerFunc(data)` when a new message arrives from the Node.js process.
-
-**Note:** When using the Electron platform, [`PluginListenerHandle.remove()`](#pluginlistenerhandle) does not work due to limitations.
-Use [`removeListener(listenerFunc)`](#removelistener) instead.
 
 | Param              | Type                                                                        |
 | ------------------ | --------------------------------------------------------------------------- |
