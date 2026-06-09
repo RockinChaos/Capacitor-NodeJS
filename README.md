@@ -1,16 +1,12 @@
 # 📱 Capacitor NodeJS-Integration
 
-:arrow_right: A full-fledged [Node.js](https://nodejs.org/) runtime for [Capacitor](https://capacitorjs.com) apps.
+➡️ A full-fledged [Node.js](https://nodejs.org/) runtime for [Capacitor](https://capacitorjs.com) apps.
 
-> [!CAUTION]
-> **TL;DR: This plugin is no longer recommended for new projects. Consider migrating to [Tauri](https://tauri.app/).**
->
-> Due to unmaintained upstream dependencies, I strongly encourage existing projects to migrate away. Continuing to use this plugin presents several security and performance concerns:
-> - **Outdated Node.js**: The underlying [Node.js for Mobile Apps](https://github.com/nodejs-mobile/nodejs-mobile) toolkit is unmaintained and stuck on Node.js 18.20, which reached end-of-life in mid-2025.
-> - **Outdated Electron Support**: As of `v1.0.0-beta.10`, Electron support has been removed. The required [`capacitor-community/electron`](https://github.com/capacitor-community/electron) plugin is similarly unmaintained and depends on Electron 26, which reached end-of-life in early 2024.
-> - Beyond these security and maintenance risks, embedding a full Node.js runtime heavily inflates app size, slows down startup times, and increases runtime memory consumption compared to modern alternatives.
->
-> **I strongly recommend [Tauri](https://tauri.app/) instead.** Tauri allows you to reuse your existing web frontend while using a lightweight Rust-based backend. With Tauri v2+, both desktop and mobile platforms are supported from a single codebase.
+> [!NOTE]  
+> This project uses the [Node.js for Mobile Apps](https://github.com/nodejs-mobile/nodejs-mobile) toolkit to add Node.js support in Android and iOS
+
+> [!WARNING]  
+> **WIP - Work in Progress**
 
 **Table of contents**
 
@@ -36,15 +32,19 @@
 
 **Capacitor v8 or newer is required.**
 
+Download the latest release from [GitHub Releases](https://github.com/RockinChaos/capacitor-nodejs/releases/latest), then install it:
+
 ```bash
-npm install https://github.com/hampoelz/capacitor-nodejs/releases/download/v1.0.0-beta.11/capacitor-nodejs.tgz
+npm install https://github.com/RockinChaos/capacitor-nodejs/releases/download/VERSION/capacitor-nodejs-VERSION.tgz
 npx cap sync
 ```
+
+> Replace `VERSION` with the latest release tag, e.g. `v1.0.0-beta.12`.
 
 ### Supported Platforms
 
 - [x] Android
-- [ ] IOS _(coming soon)_
+- [ ] iOS _(coming soon)_
 - [ ] _Web (maybe in future with WebAssembly?)_
 
 ## Examples
@@ -250,7 +250,7 @@ For convenience, a postinstall script can be added to the main `package.json` in
 The Node.js project can quickly grow very large when installing modules.
 For projects that contain a large number of files, the load time can be reduced by decreasing the number of files and the file sizes.
 
-For this reason, it is recommended to use bunder tools such as [Rollup.js](https://rollupjs.org/).
+For this reason, it is recommended to use bundler tools such as [Rollup.js](https://rollupjs.org/).
 In the following example, Rollup is used to bundle the Node.js project with all its modules to a single file.
 
 To get started install Rollup and its plugins "commonjs", "node-resolve" and "json" into the root of the Capacitor project.
@@ -268,7 +268,7 @@ Since the Node.js project is now to be bundled, the project structure needs some
 The Node.js project should no longer be copied directly from Vite to the Capacitor webDir directory, instead it will be bundled with Rollup.
 
 This means that the Node.js project directory needs to be moved from the static assets to somewhere else.
-For example to the root directory of the Capcitors project:
+For example to the root directory of the Capacitor project:
 
 ```diff
   capacitor-app/
@@ -431,7 +431,7 @@ const dataPath = getDataPath();
 >
 > Do not use the Node.js project directory itself for data storage, it will be overwritten after each application update!
 
-To get a path for temporary files, the node.js inbuilt method `os.tmpdir()` can be used:
+To get a path for temporary files, the Node.js built-in method `os.tmpdir()` can be used:
 
 ```javascript
 const os = require('os');
@@ -450,7 +450,7 @@ const tmpPath = os.tmpdir();
 
 > [!NOTE]
 >
-> This section is based on the documentation of the Node.js for Mobile Apps toolkits.
+> This section is based on the documentation of the Node.js for Mobile Apps toolkit.
 
 Not every API is supported on mobile devices. Mobile operating systems do not allow applications to call certain APIs that are expected to be available on other operating systems.
 
@@ -474,17 +474,17 @@ The internationalization (`intl`) module is not available on current nodejs-mobi
 
 - `os.cpus()` may return inconsistent/unreliable results, since different OS versions will have different permissions for accessing CPU information.
 - `os.homedir()` on mobile platforms there is no concept of user home directories.
-- `os.platform()` can also return 'android' or 'ios', depending on the platform.
+- `os.platform()` can also return `'android'` or `'ios'`, depending on the platform.
 
 On Android, the files in the cache (`os.tmpdir()`) are kept until the system needs space, so it increases the application's disk space unless the developer manually deletes them.
 
 ### process module
 
 - `process.cwd()` is the root directory of the file system, instead of the start directory of the project.
-- `process.exit()` is not allowed by the Apple App Store guildelines.
+- `process.exit()` is not allowed by the Apple App Store guidelines.
 - `process.stdin` is not available.
-- `process.platform` can also be 'android' or 'ios', depending on the platform.
-- `process.versions` includes the 'mobile' key, containing the nodejs-mobile core library version.
+- `process.platform` can also be `'android'` or `'ios'`, depending on the platform.
+- `process.versions` includes the `'mobile'` key, containing the nodejs-mobile core library version.
 
 The following functions are only available on POSIX platforms, so they are unavailable on Android:
 
@@ -508,10 +508,11 @@ The following functions are only available on POSIX platforms, so they are unava
 
 These config values are available:
 
-| Prop            | Type                            | Description                                                                                                                                                                                                                               | Default               | Since |
-| --------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- | ----- |
-| **`nodeDir`**   | <code>string</code>             | Relative path of the integrated Node.js project based on the Capacitor webdir.                                                                                                                                                            | <code>"nodejs"</code> | 1.0.0 |
-| **`startMode`** | <code>'manual' \| 'auto'</code> | Startup mode of the Node.js engine. The following values are accepted: **`auto`**: The Node.js engine starts automatically when the application is launched. **`manual`**: The Node.js engine is started via the `NodeJS.start()` method. | <code>"auto"</code>   | 1.0.0 |
+| Prop             | Type                            | Description                                                                                                                                                                                                                               | Default               | Since         |
+| ---------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |---------------|
+| **`nodeDir`**    | <code>string</code>             | Relative path of the integrated Node.js project based on the Capacitor webdir.                                                                                                                                                            | <code>"nodejs"</code> | 1.0.0         |
+| **`startMode`**  | <code>'manual' \| 'auto'</code> | Startup mode of the Node.js engine. The following values are accepted: **`auto`**: The Node.js engine starts automatically when the application is launched. **`manual`**: The Node.js engine is started via the `NodeJS.start()` method. | <code>"auto"</code>   | 1.0.0         |
+| **`nodeArgs`**   | <code>string[]</code>           | A list of Node.js startup arguments passed to the runtime on launch. For example: `["--openssl-legacy-provider"]`. When using manual start mode, arguments passed to `NodeJS.start()` take precedence over this config.                   | <code>[]</code>       | 1.0.0-beta.12 |
 
 ### Examples
 
@@ -522,7 +523,8 @@ In `capacitor.config.json`:
   "plugins": {
     "CapacitorNodeJS": {
       "nodeDir": "custom-nodejs",
-      "startMode": "manual"
+      "startMode": "manual",
+      "nodeArgs": ["--openssl-legacy-provider"]
     }
   }
 }
@@ -540,6 +542,7 @@ const config: CapacitorConfig = {
     CapacitorNodeJS: {
       nodeDir: "custom-nodejs",
       startMode: "manual",
+      nodeArgs: ["--openssl-legacy-provider"],
     },
   },
 };
@@ -606,7 +609,7 @@ Returns a path for a per-user application data directory on each platform, where
 
 The `channel` class of the `bridge` module is an [Event Emitter](https://nodejs.org/api/events.html#events_class_eventemitter). It provides a few methods to send messages from the Node.js process to the Capacitor layer, and to receive replies from the Capacitor layer.
 
-It has the following method to listen for events and send messages:
+It has the following methods to listen for events and send messages:
 
 - [`send(...)`](#channelsend)
 - [`on(string, ...)`](#channelonstring)
@@ -877,7 +880,7 @@ An interface containing the options used when starting the Node.js engine manual
 | ------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----- |
 | **`nodeDir`** | <code>string</code>                         | Relative path of the integrated Node.js project based on the Capacitor webdir. Defaults to the `nodeDir` field of the global plugin configuration. If the `nodeDir` config is not set, `nodejs` in the Capacitor webdir is used as Node.js project directory.            | 1.0.0 |
 | **`script`**  | <code>string</code>                         | The primary entry point to the Node.js program. This should be a module relative to the root of the Node.js project folder. Defaults to the `main` field in the project's package.json. If the `main` field is not set, `index.js` in the project's root folder is used. | 1.0.0 |
-| **`args`**    | <code>string[]</code>                       | A list of string arguments.                                                                                                                                                                                                                                              | 1.0.0 |
+| **`args`**    | <code>string[]</code>                       | A list of string arguments. If not specified, falls back to the `nodeArgs` field of the global plugin configuration.                                                                                                                                                     | 1.0.0 |
 | **`env`**     | <code><a href="#nodeenv">NodeEnv</a></code> | Environment key-value pairs.                                                                                                                                                                                                                                             | 1.0.0 |
 
 
@@ -927,10 +930,5 @@ The callback function to be called when listen to messages from the Node.js proc
 ---
 
 <p align="center">
-  Made with ❤️ by Rene Hampölz
-  <br><br>
-  <a href="https://hampi.at/requests/github"><img src="https://img.shields.io/badge/Email-181717?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOS4zODEiIGhlaWdodD0iOS42MzkiIHZpZXdCb3g9IjAgMCAyLjQ4MiAyLjU1IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0ZXh0IHhtbDpzcGFjZT0icHJlc2VydmUiIHN0eWxlPSJmb250LXNpemU6My4xNzVweDtmaWxsOiMwMDA7c3Ryb2tlLXdpZHRoOi4yNjQ1ODMiIHg9IjkxLjg2NyIgeT0iMTEwLjEyNyIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTkyLjA1IC0xMDcuODYzKSI+PHRzcGFuIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0OjQwMDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtZmFtaWx5OidPcGVuIFNhbnMnOy1pbmtzY2FwZS1mb250LXNwZWNpZmljYXRpb246J09wZW4gU2Fucyc7ZmlsbDojZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZS13aWR0aDouMjY0NTgzIiB4PSI5MS44NjciIHk9IjExMC4xMjciPkA8L3RzcGFuPjwvdGV4dD48L3N2Zz4=" alt="Email"></a>
-  <a href="https://hampi.at/github"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
-  <a href="https://hampi.at/discord"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a>
-  <a href="https://hampi.at/instagram"><img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram"></a>
+  Originally created by <a href="https://github.com/hampoelz">Rene Hampölz</a> · Maintained by <a href="https://github.com/RockinChaos">RockinChaos</a>
 </p>
