@@ -36,7 +36,7 @@ declare module '@capacitor/cli' {
        *
        * @since 1.0.0-beta.12
        * @default []
-       * @example ["--openssl-legacy-provider"]
+       * @example ["--max-http-header-size=16384"]
        */
       nodeArgs?: string[];
     };

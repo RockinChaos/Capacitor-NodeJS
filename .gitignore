@@ -65,3 +65,6 @@ render.experimental.xml
 
 # Android Profiling
 *.hprof
+
+# Extracted libnode binaries (generated at pack time from libnode.zip, do not commit)
+android/libnode/bin/*/libnode.so

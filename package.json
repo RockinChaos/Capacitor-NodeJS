@@ -9,7 +9,10 @@
   "unpkg": "dist/plugin.js",
   "files": [
     "android/src/main/",
-    "android/libnode/",
+    "android/libnode/bin/arm64-v8a/libnode.so",
+    "android/libnode/bin/armeabi-v7a/libnode.so",
+    "android/libnode/bin/x86_64/libnode.so",
+    "android/libnode/include/",
     "android/build.gradle",
     "android/CMakeLists.txt",
     "assets/",
@@ -37,7 +40,7 @@
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
     "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin && cd ..",
-    "verify:android": "cd android && gradlew clean build test && cd ..",
+    "verify:android": "node scripts/extract-libnode.mjs && cd android && gradlew clean build test && cd .. && node scripts/cleanup-libnode.mjs",
     "verify:web": "npm run build",
     "verify:ci": "npm run verify:android && npm run verify:web",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
@@ -51,7 +54,8 @@
     "build": "npm run clean && tsc && rollup -c rollup.config.mjs && npm run build-bridge",
     "clean": "rimraf ./dist ./build",
     "watch": "tsc --watch",
-    "prepack": "mkdirp build",
+    "prepack": "mkdirp build && node scripts/extract-libnode.mjs",
+    "postpack": "node scripts/cleanup-libnode.mjs",
     "pack:bridge": "cd assets/types/bridge && npm pack --pack-destination ../ && node ../../../scripts/pack-bridge.mjs",
     "pack": "npm run pack:bridge && npm pack --pack-destination build/",
     "prepublishOnly": "npm run build",
@@ -79,7 +83,8 @@
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-dts": "^6.4.1",
     "swiftlint": "^2.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "unzipper": "^0.12.3"
   },
   "peerDependencies": {
     "@capacitor/core": ">=8.0.0"

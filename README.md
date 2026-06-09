@@ -524,7 +524,7 @@ In `capacitor.config.json`:
     "CapacitorNodeJS": {
       "nodeDir": "custom-nodejs",
       "startMode": "manual",
-      "nodeArgs": ["--openssl-legacy-provider"]
+      "nodeArgs": ["--max-http-header-size=16384"]
     }
   }
 }
@@ -542,7 +542,7 @@ const config: CapacitorConfig = {
     CapacitorNodeJS: {
       nodeDir: "custom-nodejs",
       startMode: "manual",
-      nodeArgs: ["--openssl-legacy-provider"],
+      nodeArgs: ["--max-http-header-size=16384"],
     },
   },
 };
