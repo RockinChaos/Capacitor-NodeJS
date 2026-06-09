@@ -27,6 +27,18 @@ declare module '@capacitor/cli' {
        * @example "manual"
        */
       startMode?: 'auto' | 'manual';
+
+      /**
+       * A list of Node.js startup arguments passed to the runtime on launch.
+       *
+       * When using manual start mode, arguments passed to `NodeJS.start()` take
+       * precedence over this config if defined.
+       *
+       * @since 1.0.0-beta.12
+       * @default []
+       * @example ["--openssl-legacy-provider"]
+       */
+      nodeArgs?: string[];
     };
   }
 }
@@ -57,7 +69,9 @@ export interface StartOptions {
   script?: string;
 
   /**
-   * A list of string arguments.
+   * A list of string arguments passed to the Node.js runtime.
+   *
+   * If not specified, falls back to the `nodeArgs` field of the global plugin configuration.
    *
    * @since 1.0.0
    */
