@@ -17,14 +17,17 @@
     "ios/Plugin/",
     "CapacitorNodejs.podspec"
   ],
-  "author": "Rene Hampölz",
+  "author": "RockinChaos",
+  "contributors": [
+    "Rene Hampölz (https://github.com/hampoelz)"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hampoelz/Capacitor-NodeJS.git"
+    "url": "git+https://github.com/RockinChaos/capacitor-nodejs.git"
   },
   "bugs": {
-    "url": "https://github.com/hampoelz/Capacitor-NodeJS/issues"
+    "url": "https://github.com/RockinChaos/capacitor-nodejs/issues"
   },
   "keywords": [
     "capacitor",
