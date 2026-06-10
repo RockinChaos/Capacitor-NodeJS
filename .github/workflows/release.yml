@@ -47,7 +47,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ steps.pkg.outputs.version }}
-          name: Release v${{ steps.pkg.outputs.version }}
+          name: ${{ steps.pkg.outputs.version }}
           draft: true
           files: build/capacitor-nodejs-*.tgz
 
