@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
@@ -22,7 +22,7 @@ jobs:
 
       - name: Cache NDK
         id: cache-ndk
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.ANDROID_SDK_ROOT }}/ndk/27.0.12077973
           key: ndk-27.0.12077973
